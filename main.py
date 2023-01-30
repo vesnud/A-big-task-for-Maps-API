@@ -14,11 +14,12 @@ class Example(QWidget):
         super().__init__()
         self.x, self.y = 137.284199, -26.7280478
         self.spn = 20
+        self.temp = 'map'
         self.getImage()
         self.initUI()
 
     def getImage(self):
-        map_request = f"http://static-maps.yandex.ru/1.x/?ll={self.x},{self.y}&spn=10,{int(self.spn)}&l=sat"
+        map_request = f"http://static-maps.yandex.ru/1.x/?ll={self.x},{self.y}&spn=10,{int(self.spn)}&l={self.temp}"
         response = requests.get(map_request)
 
         if not response:
@@ -41,6 +42,7 @@ class Example(QWidget):
         self.btn = QPushButton(self)
         self.btn.setGeometry(400, 0, 200, 30)
         self.btn.setText('Поиск')
+        self.btn.clicked.connect(self.click)
         ## Изображение
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
@@ -48,6 +50,22 @@ class Example(QWidget):
         self.image.resize(600, 450)
         self.image.setPixmap(self.pixmap)
         self.image.setGeometry(0, 30, 600, 450)
+
+    def click(self):
+        self.x, self.y = QLineEdit.text()
+
+
+    def click_map(self):
+        self.temp = 'map'
+        self.getImage()
+        self.pixmap = QPixmap(self.map_file)
+        self.image.setPixmap(self.pixmap)
+
+    def click_sat(self):
+        self.temp = 'sat'
+        self.getImage()
+        self.pixmap = QPixmap(self.map_file)
+        self.image.setPixmap(self.pixmap)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_PgUp:
