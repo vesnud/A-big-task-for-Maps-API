@@ -3,7 +3,7 @@ import sys
 
 import requests
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QLineEdit
 from PyQt5.QtCore import Qt
 
 SCREEN_SIZE = [600, 450]
@@ -35,14 +35,19 @@ class Example(QWidget):
     def initUI(self):
         self.setGeometry(100, 100, *SCREEN_SIZE)
         self.setWindowTitle('Отображение карты')
-
-
+        # Кнопки
+        self.line = QLineEdit(self)
+        self.line.setGeometry(0, 0, 400, 30)
+        self.btn = QPushButton(self)
+        self.btn.setGeometry(400, 0, 200, 30)
+        self.btn.setText('Поиск')
         ## Изображение
         self.pixmap = QPixmap(self.map_file)
         self.image = QLabel(self)
         self.image.move(0, 0)
         self.image.resize(600, 450)
         self.image.setPixmap(self.pixmap)
+        self.image.setGeometry(0, 30, 600, 450)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_PgUp:
